@@ -1,0 +1,12 @@
+{
+    "name": "QuotaRolloverTweaks",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/33mamaster/LC-QuotaRolloverTweaks/",
+    "description": "A mod which builds on the QuotaRollover Mod by boxofbiscuits97. Aims to balance and extend the original mod with new features.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+        "boxofbiscuits97-QuotaRollover-2.3.0",
+        "Evaisa-HookGenPatcher-0.0.5",
+        "MaxWasUnavailable-LethalModDataLib-1.2.2"
+    ]
+}
