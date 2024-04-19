@@ -6,10 +6,11 @@
 
 ## Added configurable features:
 - Only consider new scrap for Quota Overtime
-	- (Config still to be added)
+	- Default: Enabled
+- Set Overtime Bonus to 0
+	- Default: Disabled
 
 ## Planned features:
-- Option to disable overtime entirely (always sets overtime to 0)
 - Option to change team wipe to remove some existing quota
 	- Team wipes normally removes all scrap. Why not remove some quota as a replacement, since all scrap is sold?!
 	- Punishment mechanic if QuotaRollover feels too safe

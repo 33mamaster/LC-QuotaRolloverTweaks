@@ -14,37 +14,14 @@ namespace QuotaRolloverTweaks.Patches
     {
         internal static void Init()
         {
-            IL.TimeOfDay.SetNewProfitQuota += SetNewProfitQuota_Patch;
-        }
-
-        private static void SetNewProfitQuota_Patch(ILContext il)
-        {
-            /*
-            // Find:
-
-            int num = quotaFulfilled - profitQuota;
-            
-            // Offset considered quota by previous amount
-            */
-
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(
-                MoveType.After,
-                i => i.MatchLdarg(0),
-                i => i.MatchLdfld(typeof(TimeOfDay).GetField("quotaFulfilled")),
-                i => i.MatchLdarg(0),
-                i => i.MatchLdfld(typeof(TimeOfDay).GetField("profitQuota")),
-                i => i.OpCode == OpCodes.Sub
-            );
-
-            // Insert new formula
-            // int num = Mathf.Max(quotaFulfilled - profitQuota - overflowQuota, 0)
-            c.EmitDelegate<Func<int, int>>((overtimeBonus) =>
+            if (Config.currentQuotaScrapOnly.Value)
             {
-                int calculatedOvertime = Mathf.Max(overtimeBonus - QuotaRolloverTweaksData.overflowQuota, 0);
-                Plugin.Logger.LogInfo($"Calculated Overtime at: {calculatedOvertime}");
-                return calculatedOvertime;
-            });
+                IL.TimeOfDay.SetNewProfitQuota += currentQuotaScrapOnly;
+            }
+            if (Config.noOvertime.Value)
+            {
+                IL.TimeOfDay.SetNewProfitQuota += noOvertimeBonus;
+            }
         }
 
         [HarmonyPatch("SetNewProfitQuota")]
@@ -58,18 +35,68 @@ namespace QuotaRolloverTweaks.Patches
                 QuotaRolloverTweaksData.overflowQuota = ___quotaFulfilled;
             }
         }
+
+        private static void currentQuotaScrapOnly(ILContext il)
+        {
+            /* Offset considered quota by previous amount
+            // Find:
+
+            int num = quotaFulfilled - profitQuota;
+
+            // Replace
+            int num = Mathf.Max(quotaFulfilled - profitQuota - overflowQuota, 0);
+            
+            */
+            ILCursor c = new ILCursor(il);
+            c.GotoNext(
+                MoveType.After,
+                i => i.MatchLdarg(0),
+                i => i.MatchLdfld(typeof(TimeOfDay).GetField("quotaFulfilled")),
+                i => i.MatchLdarg(0),
+                i => i.MatchLdfld(typeof(TimeOfDay).GetField("profitQuota")),
+                i => i.OpCode == OpCodes.Sub
+            );
+
+            // Insert new formula
+            // int num = Mathf.Max(quotaFulfilled - profitQuota - overflowQuota, 0)
+            c.EmitDelegate<Func<int, int>>((num) =>
+            {
+                int calculatedOvertime = Mathf.Max(num - QuotaRolloverTweaksData.overflowQuota, 0);
+                Plugin.Logger.LogInfo($"Calculated Overtime at: {calculatedOvertime}");
+                return calculatedOvertime;
+            });
+
+
+        }
+
+        private static void noOvertimeBonus(ILContext il)
+        {
+            /* Remove Overtime
+            // Find:
+
+            SyncNewProfitQuotaClientRpc(profitQuota, overtimeBonus, timesFulfilledQuota);
+
+            // Replace:
+            SyncNewProfitQuotaClientRpc(profitQuota, 0, timesFulfilledQuota);
+
+            */
+            ILCursor c = new ILCursor(il);
+            c.GotoNext(
+                i => i.MatchLdarg(0), // Match ldarg.0
+                i => i.MatchLdarg(0), // Match ldarg.0 again
+                i => i.MatchLdfld(typeof(TimeOfDay).GetField("profitQuota")), // Match ldfld TimeOfDay::profitQuota
+                i => i.MatchLdloc(1), // Match ldloc.1
+                i => i.MatchLdarg(0), // Match ldarg.0
+                i => i.MatchLdfld(typeof(TimeOfDay).GetField("timesFulfilledQuota")), // Match ldfld TimeOfDay::timesFulfilledQuota
+                i => i.MatchCall(typeof(TimeOfDay).GetMethod("SyncNewProfitQuotaClientRpc", new[] { typeof(int), typeof(int), typeof(int) })) // Match call to SyncNewProfitQuotaClientRpc
+            );
+
+            // Remove old commands and replace
+            c.Index += 3;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4_0);
+
+            Plugin.Logger.LogInfo(il.ToString());
+        }
     }
 }
-
-// Insert new IL instructions to set overtimeBonus according to your C# code
-//c.Emit(OpCodes.Ldarg_0); // Load "this" onto the stack
-//c.Emit(OpCodes.Ldfld, typeof(QuotaRolloverTweaksData).GetField("overflowQuota")); // Load QuotaRolloverTweaksData.overflowQuota onto the stack
-//c.Emit(OpCodes.Sub); // Subtract QuotaRolloverTweaksData.overflowQuota from num
-//c.Emit(OpCodes.Ldc_I4_5); // Load 5 onto the stack
-//c.Emit(OpCodes.Div); // Divide (num - QuotaRolloverTweaksData.overflowQuota) by 5
-//c.Emit(OpCodes.Ldc_I4, 15); // Load 15 onto the stack
-//c.Emit(OpCodes.Ldarg_0); // Load "this" onto the stack
-//c.Emit(OpCodes.Ldfld, typeof(TimeOfDay).GetField("daysUntilDeadline")); // Load daysUntilDeadline onto the stack
-//c.Emit(OpCodes.Mul); // Multiply 15 by daysUntilDeadline
-//c.Emit(OpCodes.Add); // Add (num - QuotaRolloverTweaksData.overflowQuota) / 5 + 15 * daysUntilDeadline
-//c.Emit(OpCodes.Stloc_1); // Store the result in overtimeBonus

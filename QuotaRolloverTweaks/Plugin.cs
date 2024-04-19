@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using QuotaRolloverTweaks.Patches;
@@ -14,6 +15,7 @@ namespace QuotaRolloverTweaks
         private const string modName = "Quota Rollover Tweaks";
         private const string modVersion = "1.0.0";
 
+        public static ConfigFile config;
         internal static new ManualLogSource Logger;
 
         private readonly Harmony harmony = new Harmony(modGUID);
@@ -28,13 +30,13 @@ namespace QuotaRolloverTweaks
             }
 
             Logger = base.Logger;
-
             Logger.LogInfo($"Mod {modName} is loaded!");
+
+            config = Config;
+            QuotaRolloverTweaks.Config.Load();
 
             TimeOfDayPatch.Init();
             harmony.PatchAll();
         }
-
-
     }
 }
