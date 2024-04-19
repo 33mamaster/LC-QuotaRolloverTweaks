@@ -36,6 +36,7 @@ namespace QuotaRolloverTweaks
             QuotaRolloverTweaks.Config.Load();
 
             TimeOfDayPatch.Init();
+
             harmony.PatchAll();
         }
     }

@@ -7,13 +7,15 @@
 ## Added configurable features:
 - Only consider new scrap for Quota Overtime
 	- Default: Enabled
-- Set Overtime Bonus to 0
+- Remove Overtime Bonus entirely by setting it to 0
 	- Default: Disabled
+- Remove fulfilled quota on a party wipe.
+	- This is similar to when everyone dies and you lose all scrap in the ship
+	- Default: Enabled
 
 ## Planned features:
-- Option to change team wipe to remove some existing quota
-	- Team wipes normally removes all scrap. Why not remove some quota as a replacement, since all scrap is sold?!
-	- Punishment mechanic if QuotaRollover feels too safe
+- Option to make team wipe only remove a percentage of the fulfilled quota
+	- Remove a percentage of the fulfilled quota instead of setting to 0
 
 
 ## Changelog
