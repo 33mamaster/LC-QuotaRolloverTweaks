@@ -12,6 +12,7 @@ namespace QuotaRolloverTweaks.Patches
     [HarmonyPatch(typeof(TimeOfDay))]
     internal class TimeOfDayPatch
     {
+        // IL Code Injections
         internal static void Init()
         {
             if (Config.currentQuotaScrapOnly.Value)
@@ -95,8 +96,6 @@ namespace QuotaRolloverTweaks.Patches
             c.Index += 3;
             c.Remove();
             c.Emit(OpCodes.Ldc_I4_0);
-
-            Plugin.Logger.LogInfo(il.ToString());
         }
     }
 }
