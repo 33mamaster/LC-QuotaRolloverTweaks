@@ -3,9 +3,11 @@
 
  This mod aims to be an extension of QuotaRollover, allowing for a more balanced and configurable experience over the original mod.
 
+ Create a Github issue or ping me in the modding discord if you find a bug.
 
 ## Added configurable features:
 - Only consider new scrap for Quota Overtime
+	- This prevents you getting free Overtime bonus from the rolled over quota
 	- Default: Enabled
 - Remove Overtime Bonus entirely by setting it to 0
 	- Default: Disabled
