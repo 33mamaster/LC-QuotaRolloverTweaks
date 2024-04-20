@@ -3,17 +3,17 @@
 
  This mod aims to be an extension of QuotaRollover, allowing for a more balanced and configurable experience over the original mod.
 
- Create a Github issue or ping me in the modding discord if you find a bug.
+ Create a Github issue or ping me (name is set as 33) in the modding discord if you find a bug.
 
 ## Added configurable features:
 - Only consider new scrap for Quota Overtime
 	- This prevents you getting free Overtime bonus from the rolled over quota
-	- Default: Enabled
+	- Default: `Enabled`
 - Remove Overtime Bonus entirely by setting it to 0
-	- Default: Disabled
+	- Default: `Disabled`
 - Remove fulfilled quota on a party wipe.
 	- This is similar to when everyone dies and you lose all scrap in the ship
-	- Default: Enabled
+	- Default: `Enabled`
 
 ## Planned features:
 - Option to make team wipe only remove a percentage of the fulfilled quota
