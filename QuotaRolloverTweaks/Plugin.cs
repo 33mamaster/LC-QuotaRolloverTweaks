@@ -13,7 +13,7 @@ namespace QuotaRolloverTweaks
     {
         private const string modGUID = "33mamaster.QuotaRolloverTweaks";
         private const string modName = "Quota Rollover Tweaks";
-        private const string modVersion = "1.0.0";
+        private const string modVersion = "1.0.1";
 
         public static ConfigFile config;
         internal static new ManualLogSource Logger;

@@ -1,6 +1,6 @@
 {
     "name": "QuotaRolloverTweaks",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/33mamaster/LC-QuotaRolloverTweaks/",
     "description": "A mod which builds on the QuotaRollover Mod by boxofbiscuits97. Aims to balance and extend the original mod with new features.",
     "dependencies": [
