@@ -1,4 +1,4 @@
-# LC-QuotaRolloverTweaks
+# QuotaRolloverTweaks
  QuotaRollover tweaks mod for Lethal Company. Inspired by the QuotaRollover mod by boxofbiscuits97.
 
  This mod aims to be an extension of QuotaRollover, allowing for a more balanced and configurable experience over the original mod.
