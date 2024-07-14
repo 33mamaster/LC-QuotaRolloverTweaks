@@ -23,5 +23,5 @@
 ## Changelog
 - v1.0.0
 	- Initial Release
-- V1.0.1
+- V1.0.2
 	- Uploaded correct .dll
